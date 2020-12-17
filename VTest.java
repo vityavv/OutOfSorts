@@ -1,48 +1,32 @@
 import java.util.Random;
+// Props to stackoverflow (refereincing https://stackoverflow.com/questions/2186931/java-pass-method-as-parameter)
+interface SortInterface {
+	void sort(int[] data);
+}
 public class VTest {
+
+	private static int NUMTESTS = 1000;
+	private static int MAXARRSIZE = 1000; //arrays are random length
+
 	public static void main(String[] args) {
-		System.out.println("Bubble sort");
+		testSort(Sorts::bubbleSort, "Bubble Sort");
+		System.out.println();
+		testSort(Sorts::selectionSort, "Selection Sort");
+		System.out.println();
+		testSort(Sorts::insertionSort, "Insertion Sort");
+	}
+	public static void testSort(SortInterface sort, String name) {
+		System.out.println("Testing sort " + name);
 		Random rng = new Random();
-		int[] randArr = randArray(rng);
-		System.out.println("Not sorted: ");
-		System.out.println(!checkSorted(randArr));
-		System.out.println("Sorting");
-		Sorts.bubbleSort(randArr);
-		System.out.println("Sorted: ");
-		System.out.println(checkSorted(randArr));
-
-		System.out.println("Selection Sort");
-		randArr = randArray(rng);
-		System.out.println("Not sorted: ");
-		System.out.println(!checkSorted(randArr));
-		System.out.println("Sorting");
-		Sorts.selectionSort(randArr);
-		System.out.println("Sorted: ");
-		System.out.println(checkSorted(randArr));
-		int[] backwardsArr = new int[100];
+		for (int i = 0; i < NUMTESTS; i++) {
+			int[] randArr = randArray(rng);
+			sort.sort(randArr);
+			if (!checkSorted(randArr)) System.out.println(name + " failed sorting random arrays");
+		}
+		int[] backwardsArr = new int[MAXARRSIZE];
 		for (int i = 0; i < backwardsArr.length; i++) backwardsArr[i] = 100 - i;
-		System.out.println("Not sorted: ");
-		System.out.println(!checkSorted(backwardsArr));
-		System.out.println("Sorting");
-		Sorts.selectionSort(backwardsArr);
-		System.out.println("Sorted: ");
-		System.out.println(checkSorted(backwardsArr));
-
-		System.out.println("Insertion Sort");
-		randArr = randArray(rng);
-		System.out.println("Not sorted: ");
-		System.out.println(!checkSorted(randArr));
-		System.out.println("Sorting");
-		Sorts.insertionSort(randArr);
-		System.out.println("Sorted: ");
-		System.out.println(checkSorted(randArr));
-		for (int i = 0; i < backwardsArr.length; i++) backwardsArr[i] = 100 - i;
-		System.out.println("Not sorted: ");
-		System.out.println(!checkSorted(backwardsArr));
-		System.out.println("Sorting");
-		Sorts.insertionSort(backwardsArr);
-		System.out.println("Sorted: ");
-		System.out.println(checkSorted(backwardsArr));
+		sort.sort(backwardsArr);
+		if (!checkSorted(backwardsArr)) System.out.println(name + " failed sorting a backwards array");
 	}
 	public static boolean checkSorted(int[] arr) {
 		for (int i = 0; i < arr.length - 1; i++) {
@@ -51,7 +35,7 @@ public class VTest {
 		return true;
 	}
 	public static int[] randArray(Random rng) {
-		int[] arr = new int[Math.abs(rng.nextInt() % 1000)];
+		int[] arr = new int[Math.abs(rng.nextInt() % MAXARRSIZE)];
 		for (int i = 0; i < arr.length; i++) {
 			arr[i] = rng.nextInt();
 		}
