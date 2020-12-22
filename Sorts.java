@@ -16,12 +16,12 @@ public class Sorts {
 	public static void selectionSort(int[] data) {
 		for (int i = 0; i < data.length - 1; i++) {
 			int smallestInd = i;
-			for (int j = 0; j < data.length; j++) {
+			for (int j = i; j < data.length; j++) {
 				if (data[j] < data[smallestInd]) smallestInd = j;
 			}
 			int temp = data[i];
 			data[i] = data[smallestInd];
-			data[smallestInd] = data[i];
+			data[smallestInd] = temp;
 		}
 	}
 	public static void insertionSort(int[] data) {
